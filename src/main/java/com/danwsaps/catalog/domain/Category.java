@@ -25,7 +25,7 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 @SQLDelete(
-        sql = "UPDATE t_category SET deleted = true WHERE code = ? AND deleted = false"
+        sql = "UPDATE t_category SET deleted = true WHERE id = ? AND deleted = false"
 )
 public class Category extends AbstractBaseEntity {
 
@@ -39,15 +39,9 @@ public class Category extends AbstractBaseEntity {
     )
     @SequenceGenerator(
             name = "category_generator",
-            sequenceName = "category_code_seq"
+            sequenceName = "category_id_seq"
     )
-    @Column(
-            name = "code",
-            unique = true,
-            nullable = false,
-            updatable = false
-    )
-    private String code;
+    private Long id;
 
     @Column(
             name = "name",
