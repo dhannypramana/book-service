@@ -26,7 +26,7 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 @SQLDelete(
-        sql = "UPDATE t_author SET deleted = false WHERE id = ? AND deleted = false"
+        sql = "UPDATE t_author SET deleted = true WHERE id = ? AND deleted = false"
 )
 public class Author extends AbstractBaseEntity {
 

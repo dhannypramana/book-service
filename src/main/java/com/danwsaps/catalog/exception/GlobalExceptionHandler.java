@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @Slf4j
-public class GlobalHandlerException implements Serializable {
+public class GlobalExceptionHandler implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -8079688678153128612L;

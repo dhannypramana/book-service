@@ -3,12 +3,18 @@ package com.danwsaps.catalog.service.impl;
 import com.danwsaps.catalog.domain.Publisher;
 import com.danwsaps.catalog.dto.publisher.request.PublisherCreateRequestDTO;
 import com.danwsaps.catalog.dto.publisher.request.PublisherUpdateRequestDTO;
+import com.danwsaps.catalog.dto.publisher.response.PublisherListResponseDTO;
 import com.danwsaps.catalog.dto.publisher.response.PublisherMutationResponseDTO;
 import com.danwsaps.catalog.repository.PublisherRepository;
 import com.danwsaps.catalog.service.PublisherService;
+import com.danwsaps.catalog.util.PaginationUtil;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +22,33 @@ import org.springframework.stereotype.Service;
 public class PublisherServiceImpl implements PublisherService {
 
     private final PublisherRepository publisherRepository;
+
+    @Override
+    public Page<PublisherListResponseDTO> findPublisherList(
+            Integer page,
+            Integer limit,
+            String direction,
+            String sortBy,
+            String name
+    ) {
+        Sort sort = Sort.by(new Sort.Order(PaginationUtil.getSortDirection(direction), sortBy));
+        Pageable pageable = PageRequest.of(page, limit, sort);
+
+        Page<Publisher> pageResult = publisherRepository.findByNameLikeIgnoreCaseAndDeletedFalse(
+                name == null || name.isBlank() ? "%" : "%" + name + "%",
+                pageable
+        );
+
+        return pageResult
+                .map(publisher -> PublisherListResponseDTO
+                        .builder()
+                        .secureId(publisher.getSecureId())
+                        .name(publisher.getName())
+                        .companyName(publisher.getCompanyName())
+                        .address(publisher.getAddress())
+                        .build()
+                );
+    }
 
     @Override
     public PublisherMutationResponseDTO createNewPublisher(PublisherCreateRequestDTO dto) {
