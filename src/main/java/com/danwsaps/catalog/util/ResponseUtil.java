@@ -5,17 +5,23 @@ import com.danwsaps.catalog.enums.ResponseStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public class ResponseUtil {
+import java.io.Serial;
+import java.io.Serializable;
 
-    public static <T> ResponseEntity<GenericResponseDTO<T>> ok (T response) {
+public class ResponseUtil implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 7539283236452834447L;
+
+    public static <T extends Serializable> ResponseEntity<GenericResponseDTO<T>> ok (T response) {
         return build(response, HttpStatus.OK);
     }
 
-    public static <T> ResponseEntity<GenericResponseDTO<T>> created (T response) {
+    public static <T extends Serializable> ResponseEntity<GenericResponseDTO<T>> created (T response) {
         return build(response, HttpStatus.CREATED);
     }
 
-    private static <T> ResponseEntity<GenericResponseDTO<T>> build (T response, HttpStatus status) {
+    private static <T extends Serializable> ResponseEntity<GenericResponseDTO<T>> build (T response, HttpStatus status) {
         return ResponseEntity
                 .status(status)
                 .body(
