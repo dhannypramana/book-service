@@ -15,9 +15,7 @@ public class ResponseUtil implements Serializable {
     @Serial
     private static final long serialVersionUID = 7539283236452834447L;
 
-    public static <T extends Serializable> ResponseEntity<GenericPaginationResponseDTO<T>> ok (
-            Page<T> results
-    ) {
+    public static <T extends Serializable> ResponseEntity<GenericPaginationResponseDTO<T>> ok (Page<T> results) {
         return build(results);
     }
 

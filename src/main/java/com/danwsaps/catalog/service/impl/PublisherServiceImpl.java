@@ -34,7 +34,7 @@ public class PublisherServiceImpl implements PublisherService {
         Sort sort = Sort.by(PaginationUtil.getSortDirection(direction), sortBy);
         Pageable pageable = PageRequest.of(page, limit, sort);
 
-        Page<Publisher> pageResult = publisherRepository.findPublisherByNameLikeIgnoreCaseAndDeletedFalse(
+        Page<Publisher> pageResult = publisherRepository.findByNameLikeIgnoreCaseAndDeletedFalse(
                 name == null || name.isBlank() ? "%" : "%" + name + "%",
                 pageable
         );

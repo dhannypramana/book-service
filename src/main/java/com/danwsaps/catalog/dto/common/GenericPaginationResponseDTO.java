@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 
 @Data
@@ -17,7 +18,7 @@ import java.util.List;
         "pages",
         "elements"
 })
-public class GenericPaginationResponseDTO<T> extends AbstractBaseResponseDTO {
+public class GenericPaginationResponseDTO<T extends Serializable> extends AbstractBaseResponseDTO {
 
     @Serial
     private static final long serialVersionUID = 942261021621165687L;
