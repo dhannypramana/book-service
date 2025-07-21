@@ -11,6 +11,6 @@ public interface PublisherRepository extends JpaRepository<Publisher, String> {
 
     Optional<Publisher> findBySecureIdAndDeletedFalse(String secureId);
 
-    Page<Publisher> findPublisherByNameLikeIgnoreCaseAndDeletedFalse(String name, Pageable pageable);
+    Page<Publisher> findByNameLikeIgnoreCaseAndDeletedFalse(String name, Pageable pageable);
 
 }
