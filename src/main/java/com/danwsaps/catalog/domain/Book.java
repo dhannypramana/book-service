@@ -79,8 +79,8 @@ public class Book extends AbstractBaseEntity {
             },
             inverseJoinColumns = {
                     @JoinColumn(
-                            name = "category_code",
-                            referencedColumnName = "code"
+                            name = "category_id",
+                            referencedColumnName = "id"
                     )
             }
     )
