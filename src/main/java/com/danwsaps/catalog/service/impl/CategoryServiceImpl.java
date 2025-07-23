@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
@@ -91,6 +93,17 @@ public class CategoryServiceImpl implements CategoryService {
         response.setName(category.getName());
 
         return response;
+    }
+
+    @Override
+    public List<Category> findCategoryBySecureIdIn(List<String> secureIds) {
+        List<Category> categories = categoryRepository.findBySecureIdInAndDeletedFalse(secureIds);
+
+        if (categories.isEmpty() || categories.size() != secureIds.size()) {
+            throw new EntityNotFoundException("Categories not found for ids: " + secureIds.toString());
+        }
+
+        return categories;
     }
 
     @Override
