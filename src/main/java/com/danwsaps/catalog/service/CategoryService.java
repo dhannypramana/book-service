@@ -1,5 +1,6 @@
 package com.danwsaps.catalog.service;
 
+import com.danwsaps.catalog.domain.Category;
 import com.danwsaps.catalog.dto.category.request.CategoryCreateRequestDTO;
 import com.danwsaps.catalog.dto.category.response.CategoryListResponseDTO;
 import com.danwsaps.catalog.dto.category.response.CategoryMutationResponseDTO;
@@ -14,5 +15,7 @@ public interface CategoryService {
     CategoryMutationResponseDTO updateCategory(String secureId, CategoryCreateRequestDTO dto);
 
     Page<CategoryListResponseDTO> findCategoryList(Integer page, Integer limit, String direction, String sortBy, String name);
+
+    Category findCategoryBySecureId(String secureId);
 
 }

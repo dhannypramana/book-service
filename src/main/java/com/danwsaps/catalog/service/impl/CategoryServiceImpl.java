@@ -93,7 +93,8 @@ public class CategoryServiceImpl implements CategoryService {
         return response;
     }
 
-    private Category findCategoryBySecureId(String secureId) {
+    @Override
+    public Category findCategoryBySecureId(String secureId) {
         return categoryRepository
                 .findBySecureIdAndDeletedFalse(secureId)
                 .orElseThrow(() -> new EntityNotFoundException (

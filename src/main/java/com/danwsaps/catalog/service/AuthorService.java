@@ -1,6 +1,7 @@
 package com.danwsaps.catalog.service;
 
 
+import com.danwsaps.catalog.domain.Author;
 import com.danwsaps.catalog.dto.author.request.AuthorCreateRequestDTO;
 import com.danwsaps.catalog.dto.author.request.AuthorUpdateRequestDTO;
 import com.danwsaps.catalog.dto.author.response.AuthorListResponseDTO;
@@ -16,5 +17,7 @@ public interface AuthorService {
     AuthorMutationResponseDTO deleteAuthor(String secureId);
 
     Page<AuthorListResponseDTO> findAuthorList(Integer page, Integer limit, String direction, String sortBy, String name);
+
+    Author findAuthorBySecureId(String secureId);
 
 }
