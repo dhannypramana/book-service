@@ -5,10 +5,16 @@ import com.danwsaps.catalog.domain.Book;
 import com.danwsaps.catalog.domain.Category;
 import com.danwsaps.catalog.domain.Publisher;
 import com.danwsaps.catalog.dto.book.request.BookCreateRequestDTO;
+import com.danwsaps.catalog.dto.book.response.BookListResponseDTO;
 import com.danwsaps.catalog.dto.book.response.BookMutationResponseDTO;
 import com.danwsaps.catalog.repository.BookRepository;
 import com.danwsaps.catalog.service.BookService;
+import com.danwsaps.catalog.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +30,29 @@ public class BookServiceImpl implements BookService {
     private final PublisherServiceImpl publisherService;
 
     private final CategoryServiceImpl categoryService;
+
+    @Override
+    public Page<BookListResponseDTO> findBookList(Integer page, Integer limit, String direction, String sortBy, String title) {
+        Sort sort = Sort.by(new Sort.Order(PaginationUtil.getSortDirection(direction), sortBy));
+        Pageable pageable = PageRequest.of(page, limit, sort);
+
+        Page<Book> pageResult = bookRepository.findByTitleLikeIgnoreCaseAndDeletedFalse(
+                title == null || title.isBlank() ? "%" : "%" + title + "%",
+                pageable
+        );
+
+        return pageResult
+                .map(book ->
+                        BookListResponseDTO
+                            .builder()
+                            .secureId(book.getSecureId())
+                            .title(book.getTitle())
+                            .description(book.getDescription())
+                            .createdAt(book.getCreatedAt())
+                            .updatedAt(book.getUpdatedAt())
+                            .build()
+                );
+    }
 
     @Override
     public BookMutationResponseDTO createNewBook(BookCreateRequestDTO dto) {
