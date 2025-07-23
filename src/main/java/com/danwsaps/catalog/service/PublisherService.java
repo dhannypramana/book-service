@@ -1,5 +1,6 @@
 package com.danwsaps.catalog.service;
 
+import com.danwsaps.catalog.domain.Publisher;
 import com.danwsaps.catalog.dto.publisher.request.PublisherCreateRequestDTO;
 import com.danwsaps.catalog.dto.publisher.request.PublisherUpdateRequestDTO;
 import com.danwsaps.catalog.dto.publisher.response.PublisherListResponseDTO;
@@ -21,5 +22,7 @@ public interface PublisherService {
             String sortBy,
             String name
     );
+
+    Publisher findPublisherBySecureId(String secureId);
 
 }

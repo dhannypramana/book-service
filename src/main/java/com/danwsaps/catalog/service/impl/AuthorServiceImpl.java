@@ -97,7 +97,8 @@ public class AuthorServiceImpl implements AuthorService {
         return response;
     }
 
-    private Author findAuthorBySecureId(String secureId) {
+    @Override
+    public Author findAuthorBySecureId(String secureId) {
         return authorRepository
                 .findBySecureIdAndDeletedFalse(secureId)
                 .orElseThrow(() -> new EntityNotFoundException (

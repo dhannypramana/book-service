@@ -96,7 +96,8 @@ public class PublisherServiceImpl implements PublisherService {
         return response;
     }
 
-    private Publisher findPublisherBySecureId(String secureId) {
+    @Override
+    public Publisher findPublisherBySecureId(String secureId) {
         return publisherRepository
                 .findBySecureIdAndDeletedFalse(secureId)
                 .orElseThrow(() -> new EntityNotFoundException(
