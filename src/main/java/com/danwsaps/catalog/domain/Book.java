@@ -8,7 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLDelete;
 
 import java.io.Serial;
-import java.util.List;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -84,7 +84,7 @@ public class Book extends AbstractBaseEntity {
                     )
             }
     )
-    private List<Category> categories;
+    private Set<Category> categories;
 
     @ManyToMany
     @JoinTable(
@@ -102,6 +102,6 @@ public class Book extends AbstractBaseEntity {
                     )
             }
     )
-    private List<Author> authors;
+    private Set<Author> authors;
 
 }

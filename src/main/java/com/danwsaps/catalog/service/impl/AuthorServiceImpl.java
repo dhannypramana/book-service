@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -100,8 +101,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<Author> findAuthorBySecureIdIn(List<String> secureIds) {
-        List<Author> authors = authorRepository.findBySecureIdInAndDeletedFalse(secureIds);
+    public Set<Author> findAuthorBySecureIdIn(List<String> secureIds) {
+        Set<Author> authors = authorRepository.findBySecureIdInAndDeletedFalse(secureIds);
 
         if (authors.isEmpty() || authors.size() != secureIds.size()) {
             throw new EntityNotFoundException("Authors not found for ids: " + secureIds.toString());

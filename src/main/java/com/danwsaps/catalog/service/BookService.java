@@ -1,6 +1,7 @@
 package com.danwsaps.catalog.service;
 
 import com.danwsaps.catalog.dto.book.request.BookCreateRequestDTO;
+import com.danwsaps.catalog.dto.book.response.BookDetailResponseDTO;
 import com.danwsaps.catalog.dto.book.response.BookListResponseDTO;
 import com.danwsaps.catalog.dto.book.response.BookMutationResponseDTO;
 import org.springframework.data.domain.Page;
@@ -16,5 +17,7 @@ public interface BookService {
             String sortBy,
             String title
     );
+
+    BookDetailResponseDTO findBookDetail(String id);
 
 }
