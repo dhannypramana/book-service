@@ -4,6 +4,7 @@ import com.danwsaps.catalog.domain.Author;
 import com.danwsaps.catalog.domain.Book;
 import com.danwsaps.catalog.domain.Category;
 import com.danwsaps.catalog.domain.Publisher;
+import com.danwsaps.catalog.dto.book.projection.BookListProjection;
 import com.danwsaps.catalog.dto.book.request.BookCreateRequestDTO;
 import com.danwsaps.catalog.dto.book.response.BookListResponseDTO;
 import com.danwsaps.catalog.dto.book.response.BookMutationResponseDTO;
@@ -36,7 +37,7 @@ public class BookServiceImpl implements BookService {
         Sort sort = Sort.by(new Sort.Order(PaginationUtil.getSortDirection(direction), sortBy));
         Pageable pageable = PageRequest.of(page, limit, sort);
 
-        Page<Book> pageResult = bookRepository.findByTitleLikeIgnoreCaseAndDeletedFalse(
+        Page<BookListProjection> pageResult = bookRepository.findByTitleLikeIgnoreCaseAndDeletedFalse(
                 title == null || title.isBlank() ? "%" : "%" + title + "%",
                 pageable
         );
