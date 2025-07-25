@@ -1,6 +1,7 @@
 package com.danwsaps.catalog.web;
 
 import com.danwsaps.catalog.dto.book.request.BookCreateRequestDTO;
+import com.danwsaps.catalog.dto.book.response.BookDetailResponseDTO;
 import com.danwsaps.catalog.dto.book.response.BookListResponseDTO;
 import com.danwsaps.catalog.dto.book.response.BookMutationResponseDTO;
 import com.danwsaps.catalog.dto.common.GenericPaginationResponseDTO;
@@ -28,6 +29,13 @@ public class BookResource {
             @RequestParam(value = "title", required = false) String title
     ) {
         return ResponseUtil.ok(bookService.findBookList(page, limit, direction, sortBy, title));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GenericResponseDTO<BookDetailResponseDTO>> findBookById(
+            @PathVariable("id") String id
+    ) {
+        return ResponseUtil.ok(bookService.findBookDetail(id));
     }
 
     @PostMapping

@@ -7,6 +7,7 @@ import com.danwsaps.catalog.dto.category.response.CategoryMutationResponseDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Set;
 
 public interface CategoryService {
 
@@ -20,6 +21,6 @@ public interface CategoryService {
 
     Category findCategoryBySecureId(String secureId);
 
-    List<Category> findCategoryBySecureIdIn(List<String> secureIds);
+    Set<Category> findCategoryBySecureIdIn(List<String> secureIds);
 
 }

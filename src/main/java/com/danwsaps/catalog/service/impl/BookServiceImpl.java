@@ -4,10 +4,14 @@ import com.danwsaps.catalog.domain.Author;
 import com.danwsaps.catalog.domain.Book;
 import com.danwsaps.catalog.domain.Category;
 import com.danwsaps.catalog.domain.Publisher;
+import com.danwsaps.catalog.dto.author.response.AuthorMutationResponseDTO;
 import com.danwsaps.catalog.dto.book.projection.BookListProjection;
 import com.danwsaps.catalog.dto.book.request.BookCreateRequestDTO;
+import com.danwsaps.catalog.dto.book.response.BookDetailResponseDTO;
 import com.danwsaps.catalog.dto.book.response.BookListResponseDTO;
 import com.danwsaps.catalog.dto.book.response.BookMutationResponseDTO;
+import com.danwsaps.catalog.dto.category.response.CategoryMutationResponseDTO;
+import com.danwsaps.catalog.dto.publisher.response.PublisherMutationResponseDTO;
 import com.danwsaps.catalog.repository.BookRepository;
 import com.danwsaps.catalog.service.BookService;
 import com.danwsaps.catalog.util.PaginationUtil;
@@ -18,7 +22,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -56,10 +61,53 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public BookDetailResponseDTO findBookDetail(String id) {
+        Book book = findBookBySecureId(id);
+
+        PublisherMutationResponseDTO publisherResponse = new PublisherMutationResponseDTO();
+        publisherResponse.setSecureId(book.getPublisher().getSecureId());
+        publisherResponse.setName(book.getPublisher().getName());
+
+        Set<CategoryMutationResponseDTO> categories = book
+                .getCategories()
+                .stream()
+                .map(category -> {
+                    CategoryMutationResponseDTO categoryResponse = new CategoryMutationResponseDTO();
+                    categoryResponse.setSecureId(category.getSecureId());
+                    categoryResponse.setName(category.getName());
+                    return categoryResponse;
+                })
+                .collect(Collectors.toSet());
+
+        Set<AuthorMutationResponseDTO> authors = book
+                .getAuthors()
+                .stream()
+                .map(author -> {
+                    AuthorMutationResponseDTO authorResponse = new AuthorMutationResponseDTO();
+                    authorResponse.setSecureId(author.getSecureId());
+                    authorResponse.setName(author.getName());
+                    return authorResponse;
+                })
+                .collect(Collectors.toSet());
+
+        BookDetailResponseDTO response = new BookDetailResponseDTO();
+        response.setSecureId(book.getSecureId());
+        response.setTitle(book.getTitle());
+        response.setDescription(book.getDescription());
+        response.setPublisher(publisherResponse);
+        response.setCategories(categories);
+        response.setAuthors(authors);
+        response.setCreatedAt(book.getCreatedAt());
+        response.setUpdatedAt(book.getUpdatedAt());
+
+        return response;
+    }
+
+    @Override
     public BookMutationResponseDTO createNewBook(BookCreateRequestDTO dto) {
         Publisher publisher = publisherService.findPublisherBySecureId(dto.getPublisherId());
-        List<Category> categories = categoryService.findCategoryBySecureIdIn(dto.getCategoryIds());
-        List<Author> authors = authorService.findAuthorBySecureIdIn(dto.getAuthorIds());
+        Set<Category> categories = categoryService.findCategoryBySecureIdIn(dto.getCategoryIds());
+        Set<Author> authors = authorService.findAuthorBySecureIdIn(dto.getAuthorIds());
 
         Book book = new Book();
 
@@ -76,6 +124,14 @@ public class BookServiceImpl implements BookService {
         response.setTitle(book.getTitle());
 
         return response;
+    }
+
+    private Book findBookBySecureId(String secureId) {
+        return bookRepository
+                .findBySecureIdAndDeletedFalse(secureId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("Book with id %s not found", secureId))
+                );
     }
 
 }

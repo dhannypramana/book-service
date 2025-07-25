@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -96,8 +97,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> findCategoryBySecureIdIn(List<String> secureIds) {
-        List<Category> categories = categoryRepository.findBySecureIdInAndDeletedFalse(secureIds);
+    public Set<Category> findCategoryBySecureIdIn(List<String> secureIds) {
+        Set<Category> categories = categoryRepository.findBySecureIdInAndDeletedFalse(secureIds);
 
         if (categories.isEmpty() || categories.size() != secureIds.size()) {
             throw new EntityNotFoundException("Categories not found for ids: " + secureIds.toString());

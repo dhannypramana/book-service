@@ -9,6 +9,7 @@ import com.danwsaps.catalog.dto.author.response.AuthorMutationResponseDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Set;
 
 public interface AuthorService {
 
@@ -22,6 +23,6 @@ public interface AuthorService {
 
     Author findAuthorBySecureId(String secureId);
 
-    List<Author> findAuthorBySecureIdIn(List<String> secureIds);
+    Set<Author> findAuthorBySecureIdIn(List<String> secureIds);
 
 }
